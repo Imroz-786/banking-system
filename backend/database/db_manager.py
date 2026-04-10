@@ -109,6 +109,19 @@ class DatabaseManager:
             accounts.append(account)
         return accounts
     
+    def get_account_by_id(self, account_id):
+        """Get a single account by account_id, returns a list"""
+        self.cursor.execute(
+            'SELECT * FROM accounts WHERE account_id = ? AND is_active = 1',
+            (account_id,)
+        )
+        accounts = []
+        for row in self.cursor.fetchall():
+            account = Account(row[0], row[1], row[2], row[3])
+            account.is_active = row[4]
+            accounts.append(account)
+        return accounts
+
     def update_account_balance(self, account_id, new_balance):
         """Update account balance"""
         self.cursor.execute(
